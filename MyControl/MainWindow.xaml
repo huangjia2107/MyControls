@@ -1,0 +1,18 @@
+﻿<local:UserWindow x:Class="MyControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Style="{DynamicResource UserWindowStyle}"
+        xmlns:local="clr-namespace:MyControl.Resources.Controls" 
+        Title="MyControls" WindowStartupLocation="CenterScreen" Background="{DynamicResource BgColor}" IsSupportSetting="True" OpenSetting="MainWindow_OnOpenSetting">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"  VerticalScrollBarVisibility="Auto" 
+                  MouseLeave="UIElement_OnMouseLeave" PreviewMouseMove="UIElement_OnPreviewMouseMove"
+                  PreviewMouseLeftButtonDown="UIElement_OnPreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp"
+                  >
+
+        <ListBox BorderThickness="0" x:Name="mListBox" AllowDrop="True"  ItemsPanel="{DynamicResource ItemsPanelTemplateUseWrapPanel}" ItemContainerStyle="{DynamicResource DragItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"   PreviewMouseMove="ListBox_PreviewMouseMove" QueryContinueDrag="ListBox_QueryContinueDrag">
+        </ListBox>
+
+    </ScrollViewer>
+
+</local:UserWindow>

@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Controls="clr-namespace:MyControl.Resources.Controls">
+
+    <Style TargetType="{x:Type Controls:LabelWidthClear}">
+        <Setter Property="Focusable" Value="true"/>
+        <Setter Property="Background" Value="#00FFFFFF"/>
+        <Setter Property="Foreground" Value="{DynamicResource Text_Color}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Controls:LabelWidthClear}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <Grid>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <Button x:Name="PART_ClearBtn" Width="18" Focusable="False"  Height="18" Cursor="Hand" ToolTip="{DynamicResource StringKey_NozzleCalibration_ToolTip_RestoreAndApply}"  HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Collapsed" Command="{x:Static Controls:LabelWidthClear.ClearCommand}" Style="{DynamicResource IconDeleteBtn}">
+                                <Button.RenderTransform>
+                                    <TranslateTransform X="10" Y="-5"/>
+                                </Button.RenderTransform>
+                                <Grid>
+                                    <Ellipse Fill="{DynamicResource SiderbarBg_Color}"/>
+                                    <Path Stretch="Fill" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="16" Fill="{Binding Foreground,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}" Data="M35.000019,-3.4512665E-31 C54.329998,-3.4512665E-31 70.000002,15.670039 70.000002,35.000018 70.000002,54.329997 54.329998,70.000002 35.000019,70.000002 15.67004,70.000002 5.5511151E-16,54.329997 5.5511151E-16,35.000018 5.5511151E-16,15.670039 15.67004,-3.4512665E-31 35.000019,-3.4512665E-31 z M35.000019,4.4680833 C18.137741,4.4680833 4.4680945,18.13774 4.4680945,35.000018 4.4680945,51.862296 18.137741,65.531915 35.000019,65.531915 51.862297,65.531915 65.531915,51.862296 65.531915,35.000018 65.531915,18.13774 51.862297,4.4680833 35.000019,4.4680833 z M21.000014,15 L35.000001,28.999943 48.999989,15.000126 55.000002,21.000119 41.000014,34.999936 55.000002,49.000005 49.000115,54.999999 35.000001,40.99993 21.000014,54.999999 15.000001,48.999879 29.000115,34.999936 15.000127,20.999993 21.000014,15 z"/>
+                                </Grid>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource IconControlText_Enabled_Color}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

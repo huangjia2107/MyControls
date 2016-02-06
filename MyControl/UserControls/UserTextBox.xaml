@@ -1,0 +1,68 @@
+<UserControl x:Class="MyControl.UserControls.UserTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:input="clr-namespace:System.Windows.Input;assembly=PresentationCore"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <VisualBrush x:Key="ExampleBrush" Stretch="None" AlignmentY="Center" AlignmentX="{Binding AlignmentX,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" ViewportUnits="RelativeToBoundingBox" Viewport="0.02,0.01,0.98,0.99">
+            <VisualBrush.Visual>
+                <TextBlock MaxWidth="{Binding ActualWidth,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"  Text="{Binding BgText,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" FontSize="13" Foreground="#FF808080" TextWrapping="NoWrap" />
+            </VisualBrush.Visual>
+        </VisualBrush>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0.7"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"  SnapsToDevicePixels="true">
+                            <Grid x:Name="grid"  Background="#00000000">
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"  Background="{x:Null}"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="BorderThickness" TargetName="Bd" Value="0.5"/>
+                                <Setter Property="Foreground" Value="#FF808080"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="#FF808080"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" TargetName="grid"  Value="{DynamicResource ExampleBrush}"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Background" TargetName="grid" Value="{DynamicResource ExampleBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/> 
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="inputTextBox" input:InputMethod.IsInputMethodEnabled="False" MinHeight="25" MinWidth="35"  HorizontalContentAlignment="Right"  FontSize="14" VerticalContentAlignment="Center" PreviewTextInput="inputText_PreviewTextInput" PreviewKeyDown="inputText_PreviewKeyDown" LostFocus="inputText_LostFocus" GotFocus="inputText_GotFocus" PreviewMouseLeftButtonDown="inputTextBox_PreviewMouseLeftButtonDown"/>
+        <TextBlock x:Name="unitTextBlock"  Grid.Column="1" Margin="3,0,0,0" FontSize="14" VerticalAlignment="Center" FocusVisualStyle="{x:Null}" Visibility="Collapsed">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{DynamicResource FgColor}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource EnabledColor}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+            </TextBlock>
+    </Grid>
+</UserControl>
