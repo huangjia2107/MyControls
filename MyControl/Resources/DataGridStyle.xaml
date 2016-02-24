@@ -86,7 +86,8 @@
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="MaxWidth" Value="{Binding RowHeaderWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGrid}}}"/>
-        <Setter Property="Background" Value="#00000000"/>
+        <Setter Property="Background" Value="{DynamicResource DataGridHeader_BgColor}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DataGridHeader_FgColor}"/>
         <Setter Property="Content">
             <Setter.Value>
                 <MultiBinding Converter="{StaticResource DGRNMultiConverter}">
