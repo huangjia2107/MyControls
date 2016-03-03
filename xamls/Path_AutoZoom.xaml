@@ -1,0 +1,9 @@
+<Page
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid>  
+      <Border Height="50" Width="50">
+         <Path Fill="Transparent" Stroke="Black" StrokeThickness="0.5" Stretch="Fill" Data="M 0,0 H10 V10 L 5,15 L 0,10 Z"/>
+      </Border>
+  </Grid>
+</Page>
