@@ -102,6 +102,79 @@ namespace MyControl.Helper
             return (T)Enum.Parse(typeof(T), enumValue);
         }
         
+        /*
+        private bool IsGestureValid(MouseButtonEventArgs e)
+        {
+            //PopupRoot is internal so we can only find it by type name
+            if (e.OriginalSource.GetType().Name == "PopupRoot" || e.OriginalSource.GetType().Name == "TextBoxView")
+                return false;
+
+            //部分控件需要屏蔽手势
+            var specifiedObj = AlgorithmClass.FindSpecifiedHitVisualParent(
+                new Type[] { typeof(Thumb), typeof(ScrollBar), typeof(ListBoxItem), typeof(ListViewItem), typeof(Switch) },
+                e.OriginalSource as DependencyObject);
+
+            return specifiedObj == null ? true : false; 
+        }
+        
+        private void contextMenu_Opened(object sender, RoutedEventArgs e)
+        {
+            Point ScrollPos = Mouse.GetPosition(RecordDataGrid);
+            HitTestResult result = VisualTreeHelper.HitTest(RecordDataGrid, ScrollPos);
+
+            if (result != null)
+            {
+                var specifiedObj = AlgorithmClass.FindSpecifiedVisualParent(
+                   new Type[] { typeof(DataGridRow), typeof(DataGridRowHeader) },
+                   result.VisualHit);
+
+                IsShowHeaderMenu = (specifiedObj == null);
+            }
+        }
+        */
+        
+        public static object FindSpecifiedHitVisualParent(Type[] findObjArray, DependencyObject sourceObj)
+        {
+            if (sourceObj == null || findObjArray == null)
+                return null;
+
+            if (!(sourceObj is Visual) && !(sourceObj is Visual3D))
+                return null;
+
+            var parentObj = FindSpecifiedVisualParent(findObjArray, sourceObj);
+
+            if (parentObj != null)
+            {
+                Point ScrollPos = Mouse.GetPosition((IInputElement)parentObj);
+                HitTestResult result = VisualTreeHelper.HitTest((Visual)parentObj, ScrollPos);
+
+                if (result != null)
+                    return parentObj;
+            }
+
+            return null;
+        }
+
+        public static object FindSpecifiedVisualParent(Type[] parentObjArray, DependencyObject sourceObj)
+        {
+            if (parentObjArray == null || sourceObj == null)
+                return null;
+
+            if (!(sourceObj is Visual) && !(sourceObj is Visual3D))
+                return null;
+
+            while (sourceObj != null)
+            {
+                Type t = sourceObj.GetType();
+                if (parentObjArray.Contains(t))
+                    return Convert.ChangeType(sourceObj, t);
+
+                sourceObj = System.Windows.Media.VisualTreeHelper.GetParent(sourceObj);
+            }
+
+            return null;
+        }
+        
          //检查文件名是否已经包含数字序号后缀，返回该后缀
         public static string CheckNameNumber(string StrName)
         {
