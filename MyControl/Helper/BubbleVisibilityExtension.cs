@@ -85,27 +85,21 @@ namespace TestUI.Utils
 
         private void UpdateVisibility(UIElement element, Visibility visibility)
         {
-            DependencyObject parentNode = VisualTreeHelper.GetParent(element);
+            DependencyObject parentNode = LogicalTreeHelper.GetParent(element);
             uint FoundAncestorLevel = 0;
 
             while (parentNode != null)
-            {       
-                if (parentNode is FrameworkElement && parentNode is IAddChild)
-                {
-                    if (parentNode is Panel)
-                        visibility = GetAndSetParentVisibility<Panel>(parentNode as Panel);
-                    else if (parentNode is Decorator)
-                        visibility = GetAndSetParentVisibility<Decorator>(parentNode as Decorator);
-                }
+            {
+                if (parentNode is ContentControl)
+                    visibility = GetAndSetParentVisibility<ContentControl>(parentNode as ContentControl);
+                else if (parentNode is Panel)
+                    visibility = GetAndSetParentVisibility<Panel>(parentNode as Panel);
+                else if (parentNode is Decorator)
+                    visibility = GetAndSetParentVisibility<Decorator>(parentNode as Decorator);
                 else
-                {      
-                    if (parentNode is ContentPresenter)
-                    {
-                        ContentControl obj = (ContentControl)(parentNode as ContentPresenter).TemplatedParent;
-                        obj.Visibility = visibility;
-
-                        parentNode = obj;
-                    }
+                {
+                    parentNode = VisualTreeHelper.GetParent(parentNode);
+                    continue;
                 }
 
                 if (_AncestorType.IsAssignableFrom(parentNode.GetType()))
@@ -114,7 +108,8 @@ namespace TestUI.Utils
                     if (FoundAncestorLevel == _AncestorLevel)
                         break;
                 }
-                parentNode = VisualTreeHelper.GetParent(parentNode);
+
+                parentNode = LogicalTreeHelper.GetParent(parentNode);
             }
         }
 
@@ -136,6 +131,11 @@ namespace TestUI.Utils
             {
                 var decorator = obj as Decorator;
                 result = decorator.Visibility = decorator.Child.Visibility;
+            }
+            else if (obj is ContentControl)
+            {
+                var contentControl = obj as ContentControl;
+                result = contentControl.Visibility = contentControl.HasContent ? (contentControl.Content as UIElement).Visibility : Visibility.Visible;
             }
 
             return result;
