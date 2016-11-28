@@ -39,7 +39,12 @@ namespace TestUI.Utils
         public Type AncestorType
         {
             get { return _AncestorType; }
-            set { _AncestorType = value; }
+            set 
+            { 
+                _AncestorType = value; 
+                if (value != null && _AncestorLevel == 0)
+                    _AncestorLevel = 1;
+            }
         }
 
         private uint _AncestorLevel = 0;
@@ -57,15 +62,13 @@ namespace TestUI.Utils
 
             UIElement mTarget = service.TargetObject as FrameworkElement;
             DependencyProperty mProperty = service.TargetProperty as DependencyProperty;
-            if (mTarget != null)
+            if (mTarget != null && mProperty != null)
             {
                 var v = DependencyPropertyDescriptor.FromProperty(mProperty, typeof(UIElement));
                 v.AddValueChanged(mTarget, VisibilityChanged);
 
-                if (mProperty != null && _Binding != null)
-                {
+                if (_Binding != null)
                     return _Binding.ProvideValue(serviceProvider);// BindingOperations.SetBinding(mTarget, mProperty, _Binding);
-                }
             }
 
             return Visibility.Visible;
@@ -77,17 +80,16 @@ namespace TestUI.Utils
                 return;
 
             UIElement element = sender as UIElement;
-            ssss(element, element.Visibility);
+            UpdateVisibility(element, element.Visibility);
         }
 
-        private void ssss(UIElement element, Visibility visibility)
+        private void UpdateVisibility(UIElement element, Visibility visibility)
         {
             DependencyObject parentNode = VisualTreeHelper.GetParent(element);
             uint FoundAncestorLevel = 0;
 
             while (parentNode != null)
-            {
-                //可以添加Child的控件         
+            {       
                 if (parentNode is FrameworkElement && parentNode is IAddChild)
                 {
                     if (parentNode is Panel)
@@ -96,14 +98,13 @@ namespace TestUI.Utils
                         visibility = GetAndSetParentVisibility<Decorator>(parentNode as Decorator);
                 }
                 else
-                {
-                    //终止于ContentControl       
+                {      
                     if (parentNode is ContentPresenter)
                     {
                         ContentControl obj = (ContentControl)(parentNode as ContentPresenter).TemplatedParent;
                         obj.Visibility = visibility;
 
-                        break;
+                        parentNode = obj;
                     }
                 }
 
