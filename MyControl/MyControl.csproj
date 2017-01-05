@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Converter.cs" />
+    <Compile Include="Helper\BubbleVisibilityExtension.cs" />
     <Compile Include="Helper\DragDropAdorner.cs" />
     <Compile Include="Helper\FileAlgorithm.cs" />
     <Compile Include="Helper\GraphicAlgorithm.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Resources\Controls\ProgressRing.cs" />
     <Compile Include="Resources\Controls\ProgressRing_35.cs" />
     <Compile Include="Resources\Controls\RadialGuage.cs" />
+    <Compile Include="Resources\Controls\RectangleProgressBar.cs" />
     <Compile Include="Resources\Controls\ToggleSwitch.cs" />
     <Compile Include="Resources\Controls\UserButton.cs" />
     <Compile Include="Resources\Controls\UserWindow.cs" />
