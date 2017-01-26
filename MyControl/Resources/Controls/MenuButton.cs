@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
-namespace AmicaUI.Resources.Controls
+namespace MyControl.Resources.Controls
 {
     [TemplatePart(Name = PART_StatusCheckBox, Type = typeof(StatusCheckBox))]
     public class MenuButton : CheckBox
