@@ -78,4 +78,149 @@ namespace MyControl.Helper
             return _cache[type];
         } 
     }
+    
+    public static void AppendXmlDataToFile<T>(string strFilePath, T Parameter)
+        {
+            using (Stream fs = new FileStream(strFilePath, FileMode.Append, FileAccess.Write, FileShare.Read))
+            {
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true,
+                    OmitXmlDeclaration = true
+                };
+                using (XmlWriter xw = XmlWriter.Create(fs, settings))
+                {
+                    XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+                    namespaces.Add(string.Empty, string.Empty);
+
+                    XmlSerializer xs = new XmlSerializer(Parameter.GetType());
+                    xs.Serialize(xw, Parameter, namespaces);
+                }
+
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.Write("\r\n");
+                }
+            }
+        }
+
+        public static T ConvertXmlNode<T>(XmlNode node) where T : class
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(T));
+            using (var stringReader = new StringReader(node.OuterXml))
+            {
+                return (T)xs.Deserialize(stringReader);
+            }
+        }
+
+        public static T ReadSpecifiedNoteDataFromFile<T>(string strFilePath, Predicate<T> predicate) where T : class
+        {
+            if (!File.Exists(strFilePath))
+                return null;
+
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.LoadXml("<?xml version=\"1.0\"?><Root>" + File.ReadAllText(strFilePath) + @"</Root>");
+
+            foreach (XmlNode xmlNode in xmldoc.SelectSingleNode("//Root").ChildNodes)
+            {
+                try
+                {
+                    T t = ConvertXmlNode<T>(xmlNode);
+                    if (predicate(t))
+                        return t;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.WriteLine(ex.Message + ex.StackTrace);
+                }
+            }
+
+            return null;
+        }
+
+        public static List<T> ReadLatestSpecifiedCountXmlDataFromFile<T>(string strFilePath, int count) where T : class
+        {
+            List<T> tList = new List<T>();
+            if (!File.Exists(strFilePath))
+                return tList;
+
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.LoadXml("<?xml version=\"1.0\"?><Root>" + File.ReadAllText(strFilePath) + @"</Root>");
+
+            XmlNode currentXmlNode = xmldoc.SelectSingleNode("//Root").LastChild;
+            while (tList.Count < count)
+            {
+                if (currentXmlNode == null)
+                    break;
+
+                tList.Add(ConvertXmlNode<T>(currentXmlNode));
+                currentXmlNode = currentXmlNode.PreviousSibling;
+            }
+
+            return tList;
+        }
+
+        public static List<T> ReadAllNoteDataFromFile<T>(string strFilePath) where T : class
+        {
+            if (!File.Exists(strFilePath))
+                return null;
+
+            try
+            {
+                List<T> tList = new List<T>();
+
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.LoadXml("<?xml version=\"1.0\"?><Root>" + File.ReadAllText(strFilePath) + @"</Root>");
+
+                XmlNode currentXmlNode = xmldoc.SelectSingleNode("//Root").FirstChild;
+
+                while (true)
+                {
+                    if (currentXmlNode == null)
+                        break;
+
+                    tList.Add(ConvertXmlNode<T>(currentXmlNode));
+                    currentXmlNode = currentXmlNode.NextSibling;
+                }
+
+                return tList;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("[ ReadAllNoteDataFromFile ] Exception : " + ex.Message + ex.StackTrace);
+                return null;
+            }
+        }
+
+        public static List<T> ReadAllNoteDataFromFileContent<T>(string fileContent) where T : class
+        {
+            if (string.IsNullOrEmpty(fileContent))
+                return null;
+
+            try
+            {
+                List<T> tList = new List<T>();
+
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.LoadXml(("<?xml version=\"1.0\"?><Root>" + fileContent + @"</Root>").Replace("\0", ""));
+
+                XmlNode currentXmlNode = xmldoc.SelectSingleNode("//Root").FirstChild;
+
+                while (true)
+                {
+                    if (currentXmlNode == null)
+                        break;
+
+                    tList.Add(ConvertXmlNode<T>(currentXmlNode));
+                    currentXmlNode = currentXmlNode.NextSibling;
+                }
+
+                return tList;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("[ ReadAllNoteDataFromFile ] Exception : " + ex.Message + ex.StackTrace);
+                return null;
+            }
+        }
 }
