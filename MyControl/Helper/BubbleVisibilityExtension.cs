@@ -13,6 +13,7 @@ using System.Windows.Media;
 namespace TestUI.Utils
 {
     [MarkupExtensionReturnType(typeof(Visibility))]
+    [ContentProperty("Binding")]
     public class BubbleVisibilityExtension : MarkupExtension
     {
         public BubbleVisibilityExtension()
