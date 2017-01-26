@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows;
 using System.ComponentModel;
 
-namespace AmicaUI.Resources.Controls
+namespace MyControl.Resources.Controls
 {
     class StatusCheckBox : CheckBox
     {
