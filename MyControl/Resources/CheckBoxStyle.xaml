@@ -164,4 +164,81 @@
     </Style>
    -->
 
+   <!--用于两个图标状态的按钮 比如;暂停与恢复 等-->
+    <Style x:Key="NoBgStatusCheckBoxStyle"  TargetType="{x:Type local:StatusCheckBox}">
+        <!-- <Setter Property="FocusVisualStyle" Value="{x:Null}"/> -->
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="ToolTip" Value="{Binding UnCheckedToolTip,RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:StatusCheckBox}">
+                    <Border Padding="{TemplateBinding Padding}" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid Background="#00000000">
+                            <ContentPresenter x:Name="UnCheckedContentPresenter"
+                                              ContentSource="UnCheckedContent"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+
+                            <ContentPresenter x:Name="CheckedContentPresenter" 
+                                              ContentSource="CheckedContent"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Visibility="Hidden"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Visibility" TargetName="CheckedContentPresenter" Value="Visible"/>
+                            <Setter Property="Visibility" TargetName="UnCheckedContentPresenter" Value="Hidden"/>
+                            <Setter Property="ToolTip" Value="{Binding CheckedToolTip,RelativeSource={RelativeSource Self}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#FF808080"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style BasedOn="{StaticResource NoBgStatusCheckBoxStyle}" TargetType="{x:Type local:StatusCheckBox}">
+        <Setter Property="Background" Value="#FFB1B1B1"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#FFC1C1C1"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#FFDDDDDD"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#FF808080"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="IconStatusCheckBoxStyle"  BasedOn="{StaticResource NoBgStatusCheckBoxStyle}" TargetType="{x:Type local:StatusCheckBox}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#FFC1C1C1"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#FFDDDDDD"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#FF808080"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
