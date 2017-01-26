@@ -18,8 +18,14 @@ namespace MyControl.Resources.Controls
 
         public RectangleProgressBar() : base()
         {
+             this.SizeChanged += new SizeChangedEventHandler(RectangleProgressBar_SizeChanged);
         }
 
+        void RectangleProgressBar_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateUI();
+        } 
+        
         static RectangleProgressBar()
         {
             MinimumProperty.OverrideMetadata(typeof(RectangleProgressBar), new FrameworkPropertyMetadata(0.0d));
@@ -44,14 +50,7 @@ namespace MyControl.Resources.Controls
         {
             base.OnApplyTemplate();
             path = base.GetTemplateChild(PART_Path) as Path;
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            Size size = base.ArrangeOverride(finalSize);
-            UpdateUI();
-            return size;
-        }
+        } 
 
         protected override void OnMaximumChanged(double oldMaximum, double newMaximum)
         {
