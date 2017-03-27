@@ -14,7 +14,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using AmicaUI.Utils.Adorners;
 
-namespace AmicaUI.Utils
+namespace TestUI.Utils
 {
     public class LayoutHelper
     {
