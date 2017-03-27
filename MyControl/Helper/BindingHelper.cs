@@ -8,7 +8,7 @@ using AmicaUI.Models;
 using AmicaPCEDotNetWrap.CLR;
 using AmicaUI.UIControl;
 
-namespace AmicaUI.Utils
+namespace TestUI.Utils
 {
     public class BindingHelper
     {
